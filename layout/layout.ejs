@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="<%= config.language %>">
+
+<head>
+    <%- partial('_partial/head',{cache: true}) %>
+</head>
+
+<body>
+    <script src="<%- config.root %>js/jquery-2.0.3.min.js"></script>
+    <%- js('js/search.js') %>
+    <script type="text/javascript">
+        var search_path = "<%= config.search.path %>";
+        if (search_path.length == 0) {
+            search_path = "search.xml";
+        }
+        var path = "<%= config.root %>" + search_path;
+        searchFunc(path, 'local-search-input', 'local-search-result');
+        click_time=0;
+    </script>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <%- partial('_partial/header',{cache: true}) %>
+        <div class="main">
+            <%- partial('_partial/search',{cache: true}) %>
+            <%- body %>
+        </div>
+        <%- partial('_partial/footer',{cache: true}) %>
+    </div>
+</body>
+
+</html>
